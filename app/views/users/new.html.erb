@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Register - TestApp</title>
+
+    <%= csrf_meta_tags %>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<%= asset_path('img/favicon/favicon.ico') %>" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="/assets/fonts/boxicons.css" />
+
+    <!-- Sneat CSS -->
+    <%= stylesheet_link_tag "core", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "theme-default", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "demo", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "vendor/perfect-scrollbar", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "pages/page-auth", "data-turbo-track": "reload" %>
+
+    <!-- Helpers -->
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+
+          <!-- Register Card -->
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Logo -->
+              <div class="app-brand justify-content-center mb-4">
+                <span class="app-brand-text demo text-body fw-bolder">TestApp</span>
+              </div>
+
+              <h4 class="mb-2">Sign Up</h4>
+
+              <!-- RAILS FORM STARTS -->
+              <%= form_with model: @user, url: users_path, method: :post, class: "mb-3" do |f| %>
+
+                <div class="mb-3">
+                  <%= f.label :firstname, class: "form-label" %>
+                  <%= f.text_field :firstname, placeholder: "Enter your first name", class: "form-control", required: true %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :lastname, class: "form-label" %>
+                  <%= f.text_field :lastname, placeholder: "Enter your last name", class: "form-control", required: true %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :username, class: "form-label" %>
+                  <%= f.text_field :username, placeholder: "Enter your username", class: "form-control", required: true %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :email, class: "form-label" %>
+                  <%= f.email_field :email, placeholder: "Enter your email", class: "form-control", required: true %>
+                </div>
+
+                <div class="mb-3 form-password-toggle">
+                  <%= f.label :password, class: "form-label" %>
+                  <div class="input-group input-group-merge">
+                    <%= f.password_field :password,
+                      class: "form-control", required: true %>
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+
+                <div class="mb-3 form-password-toggle">
+                  <%= f.label :password_confirmation, class: "form-label" %>
+                  <div class="input-group input-group-merge">
+                    <%= f.password_field :password_confirmation,
+                      class: "form-control", required: true %>
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+
+                <!-- <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="terms-conditions">
+                    <label class="form-check-label" for="terms-conditions">
+                      I agree to <a href="#">privacy policy & terms</a>
+                    </label>
+                  </div>
+                </div> -->
+                
+                <div class="mb-3">
+                  <%= f.submit "Sign Up", class: "btn btn-primary d-grid w-100" %>
+                </div>
+
+              <% end %>
+              <!-- RAILS FORM END -->
+
+              <p class="text-center mt-3">
+                <span>Already have an account?</span>
+                <%= link_to "Sign in instead", "/login" %>
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sneat JS -->
+    <script type="module">
+      import 'jquery';
+      import 'popper';
+      import 'helpers';
+      import 'bootstrap';
+      import 'config';
+      import 'menu';
+      import 'main';
+    </script>
+  </body>
+</html>
