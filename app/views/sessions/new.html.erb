@@ -47,11 +47,12 @@
               <h4 class="mb-2">Sign In</h4>
 
               <!-- RAILS FORM STARTS -->
-              <%= form_with url: "/login", method: :post, class: "mb-3" do |f| %>
+              <%= form_with url: "/login", method: :post, class: "mb-3", 
+                  data: { controller: "validation", action: "submit->validation#validate" } do |f| %>
 
                 <div class="mb-3">
                   <%= f.label :email, "Email or Username", class: "form-label" %>
-                  <%= f.text_field :email, placeholder: "Enter your email or username", class: "form-control", required: true %>
+                  <%= f.text_field :email, placeholder: "Enter your email or username", class: "form-control", data: { validation_target: "email" } %>
                 </div>
 
                 <div class="mb-3 form-password-toggle">
@@ -63,7 +64,7 @@
                   </div>
                   <div class="input-group input-group-merge">
                     <%= f.password_field :password,
-                      class: "form-control", required: true %>
+                      class: "form-control", data: { validation_target: "password" } %>
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
                 </div>
