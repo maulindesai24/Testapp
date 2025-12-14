@@ -6,7 +6,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to "/login", notice: "User created successfully"
+      UserMailer.welcome_email(@user).deliver_now
+      redirect_to "/login", notice: "User created successfully. Please check your email for welcome instructions."
     else
       render :new
     end
