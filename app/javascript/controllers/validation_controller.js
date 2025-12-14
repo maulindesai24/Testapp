@@ -48,8 +48,8 @@ export default class extends Controller {
       } else if (username.length < 3) {
         this.showError(this.usernameTarget, "Username must be at least 3 characters")
         isValid = false
-      } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-        this.showError(this.usernameTarget, "Username can only contain letters, numbers, and underscores")
+      } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
+        this.showError(this.usernameTarget, "Username can only contain letters and numbers")
         isValid = false
       } else {
         this.clearError(this.usernameTarget)
@@ -94,11 +94,21 @@ export default class extends Controller {
       if (password === "") {
         this.showError(this.passwordTarget, "Password is required")
         isValid = false
-      } else if (password.length < 6) {
-        this.showError(this.passwordTarget, "Password must be at least 6 characters")
-        isValid = false
       } else {
-        this.clearError(this.passwordTarget)
+        // If this is a signup form (has password confirmation), apply full validation
+        // If this is a login form, just check it's not empty
+        const isSignupForm = this.hasPasswordConfirmationTarget
+        if (isSignupForm) {
+          if (!this.isValidPassword(password)) {
+            this.showError(this.passwordTarget, "Password must be 8+ characters, include upper & lower case letters, a number, and a special character")
+            isValid = false
+          } else {
+            this.clearError(this.passwordTarget)
+          }
+        } else {
+          // Login form: just check it's not empty
+          this.clearError(this.passwordTarget)
+        }
       }
     }
     
@@ -131,6 +141,31 @@ export default class extends Controller {
   isValidUsername(username) {
     // Username format: alphanumeric, 3-255 characters (matching User model validation)
     return /^[a-zA-Z0-9]+$/.test(username) && username.length >= 3 && username.length <= 255
+  }
+
+  isValidPassword(password) {
+    // Password format matching User model validation:
+    // - minimum length 8 characters
+    // - must contain at least 1 digit
+    // - must contain at least 1 lowercase letter
+    // - must contain at least 1 uppercase letter
+    // - must contain at least 1 special character
+    if (password.length < 8) {
+      return false
+    }
+    if (!/\d/.test(password)) {
+      return false
+    }
+    if (!/[a-z]/.test(password)) {
+      return false
+    }
+    if (!/[A-Z]/.test(password)) {
+      return false
+    }
+    if (!/[^a-zA-Z0-9]/.test(password)) {
+      return false
+    }
+    return true
   }
 
   showError(field, message) {
