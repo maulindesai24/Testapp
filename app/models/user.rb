@@ -44,4 +44,8 @@ class User < ApplicationRecord
         reset_password_sent_at < 2.hours.ago
     end
 
+    def name
+        "#{firstname} #{lastname}".strip
+    end
+
 end

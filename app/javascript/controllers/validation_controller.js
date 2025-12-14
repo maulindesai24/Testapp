@@ -57,16 +57,34 @@ export default class extends Controller {
     }
     
     // Validate Email (both forms)
+    // For login form: accept email OR username
+    // For signup form: require email format only
     if (this.hasEmailTarget) {
       const email = this.emailTarget.value.trim()
       if (email === "") {
         this.showError(this.emailTarget, "Email is required")
         isValid = false
-      } else if (!this.isValidEmail(email)) {
-        this.showError(this.emailTarget, "Please enter a valid email address")
-        isValid = false
       } else {
-        this.clearError(this.emailTarget)
+        // If this is a login form (no username target), accept email OR username
+        // If this is a signup form (has username target), require email format
+        const isLoginForm = !this.hasUsernameTarget
+        if (isLoginForm) {
+          // Accept either email format or username format (alphanumeric, min 3 chars)
+          if (!this.isValidEmail(email) && !this.isValidUsername(email)) {
+            this.showError(this.emailTarget, "Please enter a valid email address or username")
+            isValid = false
+          } else {
+            this.clearError(this.emailTarget)
+          }
+        } else {
+          // Signup form: require email format
+          if (!this.isValidEmail(email)) {
+            this.showError(this.emailTarget, "Please enter a valid email address")
+            isValid = false
+          } else {
+            this.clearError(this.emailTarget)
+          }
+        }
       }
     }
     
@@ -108,6 +126,11 @@ export default class extends Controller {
 
   isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+
+  isValidUsername(username) {
+    // Username format: alphanumeric, 3-255 characters (matching User model validation)
+    return /^[a-zA-Z0-9]+$/.test(username) && username.length >= 3 && username.length <= 255
   }
 
   showError(field, message) {
