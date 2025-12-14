@@ -47,6 +47,20 @@
               <h4 class="mb-2">Forgot Password? 🔒</h4>
               <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
 
+              <!-- Flash Messages -->
+              <% if flash[:alert] %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <%= flash[:alert] %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% end %>
+              <% if flash[:notice] %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <%= flash[:notice] %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% end %>
+
               <!-- RAILS FORM STARTS -->
               <%= form_with url: "/password_resets", method: :post, class: "mb-3" do |f| %>
 

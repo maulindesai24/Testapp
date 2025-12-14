@@ -46,6 +46,20 @@
 
               <h4 class="mb-2">Sign In</h4>
 
+              <!-- Flash Messages -->
+              <% if flash[:alert] %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <%= flash[:alert] %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% end %>
+              <% if flash[:notice] %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <%= flash[:notice] %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% end %>
+
               <!-- RAILS FORM STARTS -->
               <%= form_with url: "/login", method: :post, class: "mb-3", 
                   data: { controller: "validation", action: "submit->validation#validate" } do |f| %>
