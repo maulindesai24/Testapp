@@ -20,7 +20,7 @@
     <% end %>
 
     <!-- RAILS FORM STARTS -->
-    <%= form_with model: @user, url: password_reset_path(params[:token]), method: :patch, class: "mb-3" do |f| %>
+    <%= form_with model: @user, url: password_reset_path(token: params[:token], id: @user.id), method: :patch, class: "mb-3" do |f| %>
 
       <div class="mb-3 form-password-toggle">
         <%= f.label :password, class: "form-label" %>

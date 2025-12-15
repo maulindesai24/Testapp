@@ -37,7 +37,7 @@ class User < ApplicationRecord
     def generate_password_reset
         self.reset_password_token = SecureRandom.hex(10)
         self.reset_password_sent_at = Time.current
-        save!  #( ! = it will raise an error if the save fails)
+        save(validate: false) #( ! = it will raise an error if the save fails)
     end
 
     def password_reset_expired?
