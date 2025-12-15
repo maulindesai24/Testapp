@@ -1,23 +1,27 @@
 Rails.application.routes.draw do
-  get "password_resets/new"
-  get "password_resets/edit"
-  root "home#index"
+  # Admin routes
+  namespace :admin do
+    root "dashboard#index"
+    resources :users do
+      member do
+        patch :toggle_admin
+      end
+    end
+  end
+
+  # Authentication
   resources :users, only: [:new, :create]
 
-  resources :password_resets, only: [:new, :create, :edit, :update]
-  get "/login",  to: "sessions#new"
+  get "/login",  to: "sessions#new", as: :login
   post "/login", to: "sessions#create"
-  delete "/logout", to: "sessions#destroy"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  delete "/logout", to: "sessions#destroy", as: :logout
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Password reset
+  resources :password_resets, only: [:new, :create, :edit, :update]
+
+  # Home
+  root "home#index"
+
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

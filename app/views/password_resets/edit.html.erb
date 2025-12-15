@@ -1,2 +1,62 @@
-<h1>PasswordResets#edit</h1>
-<p>Find me in app/views/password_resets/edit.html.erb</p>
+<% content_for :title, "Reset Password - TestApp" %>
+
+<!-- Reset Password Card -->
+<div class="card">
+  <div class="card-body">
+    <!-- Logo -->
+    <div class="app-brand justify-content-center mb-4">
+      <span class="app-brand-text demo text-body fw-bolder">TestApp</span>
+    </div>
+
+    <h4 class="mb-2">Reset Password 🔒</h4>
+    <p class="mb-4">Enter your new password</p>
+
+    <!-- Flash Messages -->
+    <% if flash[:alert] %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= flash[:alert] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+
+    <!-- RAILS FORM STARTS -->
+    <%= form_with model: @user, url: password_reset_path(params[:token]), method: :patch, class: "mb-3" do |f| %>
+
+      <div class="mb-3 form-password-toggle">
+        <%= f.label :password, class: "form-label" %>
+        <div class="input-group input-group-merge">
+          <%= f.password_field :password,
+            class: "form-control",
+            placeholder: "Enter new password",
+            required: true %>
+          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+        </div>
+      </div>
+
+      <div class="mb-3 form-password-toggle">
+        <%= f.label :password_confirmation, "Confirm Password", class: "form-label" %>
+        <div class="input-group input-group-merge">
+          <%= f.password_field :password_confirmation,
+            class: "form-control",
+            placeholder: "Confirm new password",
+            required: true %>
+          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <%= f.submit "Reset Password", class: "btn btn-primary d-grid w-100" %>
+      </div>
+
+    <% end %>
+    <!-- RAILS FORM END -->
+
+    <div class="text-center">
+      <%= link_to "/login", class: "d-flex align-items-center justify-content-center" do %>
+        <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+        Back to login
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- /Reset Password Card -->

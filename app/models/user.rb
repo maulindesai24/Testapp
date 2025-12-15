@@ -47,5 +47,8 @@ class User < ApplicationRecord
     def name
         "#{firstname} #{lastname}".strip
     end
-
+    
+    def admin?
+        is_admin
+    end
 end

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default">
+  <head>
+    <%= render 'layouts/head' %>
+    <%= stylesheet_link_tag "pages/page-auth", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sneat JS -->
+    <script type="module">
+      import 'jquery';
+      import 'popper';
+      import 'helpers';
+      import 'bootstrap';
+      import 'config';
+      import 'menu';
+      import 'main';
+    </script>
+  </body>
+</html>

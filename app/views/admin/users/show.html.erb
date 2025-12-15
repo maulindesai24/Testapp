@@ -1,0 +1,121 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Admin / Users /</span> <%= @user.name %>
+</h4>
+
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">User Details</h5>
+        <div>
+          <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-primary me-2" %>
+          <%= link_to "Back to Users", admin_users_path, class: "btn btn-sm btn-label-secondary" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>ID:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.id %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>First Name:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.firstname %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Last Name:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.lastname %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Full Name:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.name %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Email:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.email %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Username:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.username %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Role:</strong>
+          </div>
+          <div class="col-md-9">
+            <% if @user.admin? %>
+              <span class="badge bg-label-success">Admin</span>
+            <% else %>
+              <span class="badge bg-label-secondary">User</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Created At:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Updated At:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @user.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @user != current_user %>
+  <div class="row">
+    <div class="col-xl">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0 text-danger">Danger Zone</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Delete User</h6>
+              <p class="text-muted mb-0">Once deleted, this user cannot be recovered.</p>
+            </div>
+            <%= link_to admin_user_path(@user), method: :delete, 
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{@user.name}? This action cannot be undone." },
+                class: "btn btn-danger" do %>
+              <i class="bx bx-trash me-1"></i> Delete User
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+

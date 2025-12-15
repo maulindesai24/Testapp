@@ -1,109 +1,55 @@
-<!DOCTYPE html>
-<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<% content_for :title, "Forgot Password - TestApp" %>
 
-    <title>Forgot Password - TestApp</title>
-
-    <%= csrf_meta_tags %>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<%= asset_path('img/favicon/favicon.ico') %>" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="/assets/fonts/boxicons.css" />
-
-    <!-- Sneat CSS -->
-    <%= stylesheet_link_tag "core", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "theme-default", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "demo", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "vendor/perfect-scrollbar", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "pages/page-auth", "data-turbo-track": "reload" %>
-
-    <!-- Helpers -->
-    <%= javascript_importmap_tags %>
-  </head>
-
-  <body>
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner py-4">
-
-          <!-- Forgot Password Card -->
-          <div class="card">
-            <div class="card-body">
-
-              <!-- Logo -->
-              <div class="app-brand justify-content-center mb-4">
-                <span class="app-brand-text demo text-body fw-bolder">TestApp</span>
-              </div>
-
-              <h4 class="mb-2">Forgot Password? 🔒</h4>
-              <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
-
-              <!-- Flash Messages -->
-              <% if flash[:alert] %>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <%= flash[:alert] %>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              <% end %>
-              <% if flash[:notice] %>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                  <%= flash[:notice] %>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              <% end %>
-
-              <!-- RAILS FORM STARTS -->
-              <%= form_with url: "/password_resets", method: :post, class: "mb-3" do |f| %>
-
-                <div class="mb-3">
-                  <%= f.label :email, class: "form-label" %>
-                  <%= f.email_field :email, 
-                    placeholder: "Enter your email", 
-                    class: "form-control", 
-                    autofocus: true,
-                    required: true %>
-                </div>
-
-                <div class="mb-3">
-                  <%= f.submit "Send Reset Link", class: "btn btn-primary d-grid w-100" %>
-                </div>
-
-              <% end %>
-              <!-- RAILS FORM END -->
-
-              <div class="text-center">
-                <%= link_to "/login", class: "d-flex align-items-center justify-content-center" do %>
-                  <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-                  Back to login
-                <% end %>
-              </div>
-
-            </div>
-          </div>
-          <!-- /Forgot Password Card -->
-
-        </div>
-      </div>
+<!-- Forgot Password Card -->
+<div class="card">
+  <div class="card-body">
+    <!-- Logo -->
+    <div class="app-brand justify-content-center mb-4">
+      <span class="app-brand-text demo text-body fw-bolder">TestApp</span>
     </div>
 
-    <!-- Sneat JS -->
-    <script type="module">
-      import 'jquery';
-      import 'popper';
-      import 'helpers';
-      import 'bootstrap';
-      import 'config';
-      import 'menu';
-      import 'main';
-    </script>
-  </body>
-</html>
+    <h4 class="mb-2">Forgot Password? 🔒</h4>
+    <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+
+    <!-- Flash Messages -->
+    <% if flash[:alert] %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= flash[:alert] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+    <% if flash[:notice] %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= flash[:notice] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+
+    <!-- RAILS FORM STARTS -->
+    <%= form_with url: "/password_resets", method: :post, class: "mb-3" do |f| %>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, 
+          placeholder: "Enter your email", 
+          class: "form-control", 
+          autofocus: true,
+          required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.submit "Send Reset Link", class: "btn btn-primary d-grid w-100" %>
+      </div>
+
+    <% end %>
+    <!-- RAILS FORM END -->
+
+    <div class="text-center">
+      <%= link_to "/login", class: "d-flex align-items-center justify-content-center" do %>
+        <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+        Back to login
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- /Forgot Password Card -->
