@@ -42,6 +42,14 @@
             data: { validation_target: "email" } %>
       </div>
 
+      <div class="mb-3">
+        <%= f.label :role_id, "Role", class: "form-label" %>
+        <%= f.select :role_id, 
+            options_from_collection_for_select(Role.all, :id, :display_name, @user.role_id),
+            { include_blank: "Select Role" }, 
+            { class: "form-select" } %>
+      </div>
+
       <div class="mb-3 form-password-toggle">
         <%= f.label :password, class: "form-label" %>
         <div class="input-group input-group-merge">

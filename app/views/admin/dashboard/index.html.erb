@@ -40,7 +40,7 @@
               </div>
             </div>
             <span class="fw-semibold d-block mb-1">Administrators</span>
-            <h3 class="card-title mb-2"><%= User.where(is_admin: true).count %></h3>
+            <h3 class="card-title mb-2"><%= User.left_joins(:role).where("users.is_admin = true OR LOWER(roles.name) = 'admin'").distinct.count %></h3>
             <small class="text-success fw-semibold">
               <i class="bx bx-check-circle"></i> Admin users
             </small>
@@ -59,8 +59,9 @@
                 <h5 class="card-title text-primary">Welcome back, <%= current_user.name %>! 👋</h5>
                 <p class="mb-4">
                   You are managing <span class="fw-bold"><%= User.count %></span> users in the system.
-                  <% if User.where(is_admin: true).count > 1 %>
-                    There are <span class="fw-bold"><%= User.where(is_admin: true).count %></span> administrators.
+                  <% admin_count = User.left_joins(:role).where("users.is_admin = true OR LOWER(roles.name) = 'admin'").distinct.count %>
+                  <% if admin_count > 1 %>
+                    There are <span class="fw-bold"><%= admin_count %></span> administrators.
                   <% else %>
                     You are the only administrator.
                   <% end %>

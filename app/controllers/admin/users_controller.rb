@@ -3,7 +3,7 @@ module Admin
     before_action :set_user, only: [:show, :edit, :update, :destroy, :toggle_admin]
 
     def index
-      @users = User.order(created_at: :desc)
+      @users = User.includes(:role).order(created_at: :desc)
     end
 
     def show
@@ -11,6 +11,7 @@ module Admin
 
     def new
       @user = User.new
+      @roles = Role.all
     end
 
     def create
@@ -24,6 +25,7 @@ module Admin
     end
 
     def edit
+      @roles = Role.all
     end
 
     def update
@@ -67,7 +69,7 @@ module Admin
     end
 
     def user_params
-      params.require(:user).permit(:email, :username, :firstname, :lastname, :password, :password_confirmation, :is_admin)
+      params.require(:user).permit(:email, :username, :firstname, :lastname, :password, :password_confirmation, :role_id, :is_admin)
     end
   end
 end

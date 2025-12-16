@@ -1,6 +1,12 @@
 class User < ApplicationRecord
     has_secure_password
 
+    # Associations
+    belongs_to :role
+
+    # Callbacks
+    before_validation :set_default_role, on: :create
+
     validates :email,
         presence: true,
         uniqueness: { case_sensitive: false },
@@ -34,10 +40,12 @@ class User < ApplicationRecord
         format: { with: VALID_PASSWORD_REGEX ,
         message: "must be 8+ characters, include upper & lower case letters, a number, and a special character" }
 
+    validates :role, presence: true
+
     def generate_password_reset
         self.reset_password_token = SecureRandom.hex(10)
         self.reset_password_sent_at = Time.current
-        save(validate: false) #( ! = it will raise an error if the save fails)
+        save(validate: false)
     end
 
     def password_reset_expired?
@@ -49,6 +57,15 @@ class User < ApplicationRecord
     end
     
     def admin?
-        is_admin
+        role&.admin? || is_admin
+    end
+
+    private
+
+    def set_default_role
+      if role_id.blank?
+        default_role = Role.find_by(name: 'user')
+        self.role_id = default_role.id if default_role
+      end
     end
 end

@@ -43,10 +43,13 @@
                 <td><%= user.email %></td>
                 <td><%= user.username %></td>
                 <td>
-                  <% if user.admin? %>
-                    <span class="badge bg-label-success me-1">Admin</span>
+                  <% if user.role %>
+                    <span class="badge bg-label-primary me-1"><%= user.role.name.humanize %></span>
                   <% else %>
-                    <span class="badge bg-label-secondary me-1">User</span>
+                    <span class="badge bg-label-secondary me-1">Not Assigned</span>
+                  <% end %>
+                  <% if user.is_admin %>
+                    <span class="badge bg-label-success me-1">Admin</span>
                   <% end %>
                 </td>
                 <td>

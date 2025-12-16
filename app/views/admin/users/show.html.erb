@@ -66,10 +66,22 @@
             <strong>Role:</strong>
           </div>
           <div class="col-md-9">
-            <% if @user.admin? %>
-              <span class="badge bg-label-success">Admin</span>
+            <% if @user.role %>
+              <span class="badge bg-label-primary"><%= @user.role.name.humanize %></span>
             <% else %>
-              <span class="badge bg-label-secondary">User</span>
+              <span class="badge bg-label-secondary">Not Assigned</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Administrator:</strong>
+          </div>
+          <div class="col-md-9">
+            <% if @user.is_admin %>
+              <span class="badge bg-label-success">Yes</span>
+            <% else %>
+              <span class="badge bg-label-secondary">No</span>
             <% end %>
           </div>
         </div>
@@ -118,4 +130,7 @@
     </div>
   </div>
 <% end %>
+
+
+
 
