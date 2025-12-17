@@ -1,6 +1,6 @@
 module Admin
   class UsersController < Admin::BaseController
-    before_action :set_user, only: [:show, :edit, :update, :destroy, :toggle_admin]
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     def index
       @users = User.includes(:role).order(created_at: :desc)
@@ -53,15 +53,6 @@ module Admin
       end
     end
 
-    def toggle_admin
-      if @user == current_user
-        redirect_to admin_users_path, alert: "You cannot change your own admin status."
-      else
-        @user.update(is_admin: !@user.is_admin)
-        redirect_to admin_users_path, notice: "User admin status updated successfully."
-      end
-    end
-
     private
 
     def set_user
@@ -69,7 +60,7 @@ module Admin
     end
 
     def user_params
-      params.require(:user).permit(:email, :username, :firstname, :lastname, :password, :password_confirmation, :role_id, :is_admin)
+      params.require(:user).permit(:email, :username, :firstname, :lastname, :password, :password_confirmation, :role_id)
     end
   end
 end

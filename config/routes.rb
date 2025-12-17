@@ -2,11 +2,8 @@ Rails.application.routes.draw do
   # Admin routes
   namespace :admin do
     root "dashboard#index"
-    resources :users do
-      member do
-        patch :toggle_admin
-      end
-    end
+    resources :users
+    resources :roles, only: [:index, :new, :create]
   end
 
   # Authentication

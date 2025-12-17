@@ -1,11 +1,27 @@
 class User < ApplicationRecord
     has_secure_password
 
-    # Associations
+    # Define is_admin as a virtual (non-persisted) attribute
+    # This prevents ActiveRecord from trying to insert it into the database
+    attribute :is_admin, :boolean, default: false
+    
+    # Override to use role-based admin check instead of database column
+    def is_admin
+      admin?
+    end
+    
+    # Override setter to prevent it from being saved
+    def is_admin=(value)
+      # Silently ignore - we use role-based admin instead
+      @is_admin = value
+    end
+
+    # Associations for role table
     belongs_to :role
 
     # Callbacks
     before_validation :set_default_role, on: :create
+    before_save :remove_is_admin_from_changes
 
     validates :email,
         presence: true,
@@ -57,7 +73,7 @@ class User < ApplicationRecord
     end
     
     def admin?
-        role&.admin? || is_admin
+        role&.admin?
     end
 
     private
@@ -66,6 +82,16 @@ class User < ApplicationRecord
       if role_id.blank?
         default_role = Role.find_by(name: 'user')
         self.role_id = default_role.id if default_role
+      end
+    end
+
+    def remove_is_admin_from_changes
+      # Remove is_admin from changes to prevent ActiveRecord from trying to save it
+      if changed_attributes.has_key?('is_admin')
+        changed_attributes.delete('is_admin')
+      end
+      if changed_attributes.has_key?(:is_admin)
+        changed_attributes.delete(:is_admin)
       end
     end
 end

@@ -1,0 +1,75 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Admin /</span> Roles
+</h4>
+
+<div class="row mb-4">
+  <div class="col-12">
+    <%= link_to "New Role", new_admin_role_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="card-header">All Roles</h5>
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Users Count</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            <% @roles.each do |role| %>
+              <tr>
+                <td><strong><%= role.id %></strong></td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div>
+                      <strong><%= role.display_name %></strong>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <% if role.description.present? %>
+                    <%= truncate(role.description, length: 50) %>
+                  <% else %>
+                    <span class="text-muted">No description</span>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="badge bg-label-info me-1"><%= role.users.count %></span>
+                </td>
+                <td><%= role.created_at.strftime("%B %d, %Y") %></td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a href="javascript:void(0);" class="dropdown-item">
+                        <i class="bx bx-show me-1"></i> View
+                      </a>
+                      <a href="javascript:void(0);" class="dropdown-item">
+                        <i class="bx bx-edit-alt me-1"></i> Edit
+                      </a>
+                      <div class="dropdown-divider"></div>
+                      <a href="javascript:void(0);" class="dropdown-item text-danger">
+                        <i class="bx bx-trash me-1"></i> Delete
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

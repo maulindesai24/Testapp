@@ -16,6 +16,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    redirect_to login_path, alert: "Please log in first." if current_user.nil?
+    redirect_to login_path if current_user.nil?
   end
 end
