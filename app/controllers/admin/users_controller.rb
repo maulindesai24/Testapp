@@ -40,6 +40,7 @@ module Admin
       if @user.update(update_params)
         redirect_to admin_user_path(@user), notice: "User updated successfully."
       else
+        @roles = Role.all
         render :edit, status: :unprocessable_entity
       end
     end
@@ -51,6 +52,10 @@ module Admin
         @user.destroy
         redirect_to admin_users_path, notice: "User deleted successfully."
       end
+    end
+
+    def show_admin_users
+      @users = User.joins(:role).where("LOWER(roles.name) = 'admin'").distinct
     end
 
     private

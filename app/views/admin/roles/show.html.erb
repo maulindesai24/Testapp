@@ -1,0 +1,154 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Admin / Roles /</span> <%= @role.display_name %>
+</h4>
+
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Role Details</h5>
+        <div>
+          <%= link_to "Edit", edit_admin_role_path(@role), class: "btn btn-sm btn-primary me-2" %>
+          <%= link_to "Back to Roles", admin_roles_path, class: "btn btn-sm btn-label-secondary" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>ID:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @role.id %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Name:</strong>
+          </div>
+          <div class="col-md-9">
+            <% if @role.admin? %>
+              <span class="badge bg-label-success"><%= @role.display_name %></span>
+            <% else %>
+              <span class="badge bg-label-success"><%= @role.display_name %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Description:</strong>
+          </div>
+          <div class="col-md-9">
+            <% if @role.description.present? %>
+              <%= @role.description %>
+            <% else %>
+              <span class="text-muted">No description provided</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Users Count:</strong>
+          </div>
+          <div class="col-md-9">
+            <span class="badge bg-label-info"><%= @role.users.count %></span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Created At:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @role.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>Updated At:</strong>
+          </div>
+          <div class="col-md-9">
+            <%= @role.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @role.users.any? %>
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <h5 class="card-header">Users with <%= @role.display_name %> Role (<%= @role.users.count %>)</h5>
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <% @role.users.each do |user| %>
+                <tr>
+                  <td><strong><%= user.id %></strong></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div>
+                        <strong><%= user.name %></strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= user.email %></td>
+                  <td><%= user.username %></td>
+                  <td><%= user.created_at.strftime("%B %d, %Y") %></td>
+                  <td>
+                    <%= link_to admin_user_path(user), class: "btn btn-sm btn-label-primary" do %>
+                      <i class="bx bx-show me-1"></i> View
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-xl">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0 text-danger">Danger Zone</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="mb-1">Delete Role</h6>
+            <% if @role.users.any? %>
+              <p class="text-muted mb-0">This role cannot be deleted because it has <%= @role.users.count %> user(s) assigned to it. Please reassign these users first.</p>
+            <% else %>
+              <p class="text-muted mb-0">Once deleted, this role cannot be recovered.</p>
+            <% end %>
+          </div>
+          <% if @role.users.any? %>
+            <button class="btn btn-danger" disabled>
+              <i class="bx bx-trash me-1"></i> Delete Role
+            </button>
+          <% else %>
+            <%= link_to admin_role_path(@role), method: :delete, 
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete '#{@role.display_name}'? This action cannot be undone." },
+                class: "btn btn-danger" do %>
+              <i class="bx bx-trash me-1"></i> Delete Role
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,150 @@
+<% content_for :title, "My Profile - TestApp" %>
+
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Account /</span> My Profile
+</h4>
+
+<div class="row">
+  <div class="col-xl-4 col-lg-5 col-md-5">
+    <div class="card mb-4">
+      <div class="card-body text-center">
+        <div class="avatar avatar-xl mb-3">
+          <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "avatar-initial rounded-circle", style: "width: 100px; height: 100px; object-fit: cover;" %>
+          <% else %>
+            <span class="avatar-initial rounded-circle bg-label-primary" style="width: 100px; height: 100px; display: inline-flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+              <%= @user.name.first.upcase %>
+            </span>
+          <% end %>
+        </div>
+        <h4 class="mb-1"><%= @user.name %></h4>
+        <p class="text-muted mb-0">
+          <span class="badge <%= @user.admin? ? 'bg-label-success' : 'bg-label-primary' %>">
+            <%= @user.admin? ? "Admin" : "User" %>
+          </span>
+        </p>
+        <p class="text-muted mb-3"><%= @user.email %></p>
+        <%= link_to edit_profile_path, class: "btn btn-primary" do %>
+          <i class="bx bx-edit me-1"></i> Edit Profile
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-8 col-lg-7 col-md-7">
+    <!-- Account Details Card -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Account Details</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>First Name:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.firstname.presence || "Not set" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Last Name:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.lastname.presence || "Not set" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Username:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.username %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Email:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.email %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Role:</strong>
+          </div>
+          <div class="col-md-8">
+            <span class="badge <%= @user.admin? ? 'bg-label-success' : 'bg-label-primary' %>">
+              <%= @user.role.name.humanize %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Profile Information</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Bio:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.bio.presence || "Not set" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Phone:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.phone.presence || "Not set" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Address:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.address.presence || "Not set" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Country:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.country.presence || "Not set" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Account Activity</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Member Since:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.created_at.strftime("%B %d, %Y") %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong>Last Updated:</strong>
+          </div>
+          <div class="col-md-8">
+            <%= @user.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

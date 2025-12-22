@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   # Admin routes
   namespace :admin do
     root "dashboard#index"
+    get 'show_admin_users', to: 'users#show_admin_users', as: 'show_admin_users'
     resources :users
-    resources :roles, only: [:index, :new, :create]
+    resources :roles
   end
 
   # Authentication
@@ -15,6 +16,9 @@ Rails.application.routes.draw do
 
   # Password reset
   resources :password_resets, only: [:new, :create, :edit, :update]
+
+  # Profile
+  resource :profile, only: [:show, :edit, :update], controller: 'profiles'
 
   # Home
   root "home#index"

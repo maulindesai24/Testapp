@@ -1,6 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
-
+    has_one_attached :avatar
     # Define is_admin as a virtual (non-persisted) attribute
     # This prevents ActiveRecord from trying to insert it into the database
     attribute :is_admin, :boolean, default: false
@@ -54,7 +54,7 @@ class User < ApplicationRecord
     validates :password,
         presence: true,
         format: { with: VALID_PASSWORD_REGEX ,
-        message: "must be 8+ characters, include upper & lower case letters, a number, and a special character" }
+        message: "must be 8+ characters, include upper & lower case letters, a number, and a special character" }, if: :password_required?
 
     validates :role, presence: true
 
@@ -74,6 +74,10 @@ class User < ApplicationRecord
     
     def admin?
         role&.admin?
+    end
+
+    def password_required?
+      new_record? || password.present?
     end
 
     private

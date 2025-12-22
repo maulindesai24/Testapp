@@ -1,0 +1,45 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Admin / Roles /</span> Edit <%= @role.display_name %>
+</h4>
+
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Edit Role</h5>
+        <%= link_to "Back to Role", admin_role_path(@role), class: "btn btn-sm btn-label-secondary" %>
+      </div>
+      <div class="card-body">
+        <%= form_with model: [:admin, @role], class: "mb-3" do |f| %>
+          <% if @role.errors.any? %>
+            <div class="alert alert-danger">
+              <h6>Please fix the following errors:</h6>
+              <ul class="mb-0">
+                <% @role.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :name, class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", placeholder: "Enter role name (e.g., manager, editor)", required: true %>
+            <div class="form-text">Role name must be unique and will be stored in lowercase</div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :description, class: "form-label" %>
+            <%= f.text_area :description, class: "form-control", placeholder: "Enter role description (optional)", rows: 4 %>
+            <div class="form-text">Optional: Describe what this role is used for</div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <%= f.submit "Update Role", class: "btn btn-primary" %>
+            <%= link_to "Cancel", admin_role_path(@role), class: "btn btn-label-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

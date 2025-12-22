@@ -52,16 +52,19 @@
                       <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
                     <div class="dropdown-menu">
-                      <a href="javascript:void(0);" class="dropdown-item">
+                      <%= link_to admin_role_path(role), class: "dropdown-item" do %>
                         <i class="bx bx-show me-1"></i> View
-                      </a>
-                      <a href="javascript:void(0);" class="dropdown-item">
+                      <% end %>
+                      <%= link_to edit_admin_role_path(role), class: "dropdown-item" do %>
                         <i class="bx bx-edit-alt me-1"></i> Edit
-                      </a>
+                      <% end %>
                       <div class="dropdown-divider"></div>
-                      <a href="javascript:void(0);" class="dropdown-item text-danger">
+                      <%= link_to admin_role_path(role), 
+                          method: :delete,
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete '#{role.display_name}'?" },
+                          class: "dropdown-item text-danger" do %>
                         <i class="bx bx-trash me-1"></i> Delete
-                      </a>
+                      <% end %>
                     </div>
                   </div>
                 </td>
