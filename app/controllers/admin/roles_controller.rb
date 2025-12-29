@@ -1,7 +1,12 @@
 module Admin
   class RolesController < Admin::BaseController
     def index
-      @roles = Role.includes(:users).order(created_at: :desc)
+      @page = params[:page].to_i <= 0 ? 1 : params[:page].to_i
+      @per_page = 10
+      offset = (@page - 1) * @per_page
+      @roles = Role.includes(:users).order(created_at: :desc).limit(@per_page).offset(offset)
+      @total_roles = Role.count
+      @total_pages = (@total_roles.to_f / @per_page).ceil
     end
 
     def new

@@ -3,7 +3,26 @@ module Admin
     before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     def index
-      @users = User.includes(:role).order(created_at: :desc)
+      @page = params[:page].to_i <= 0 ? 1 : params[:page].to_i
+      @per_page = 10
+      offset = (@page - 1) * @per_page
+      @users = User.includes(:role)
+      if params[:search].present?
+        search_term = "%#{params[:search]}%"
+        @users = @users.where(
+          "LOWER(CONCAT(users.firstname, ' ', users.lastname)) LIKE LOWER(?) OR 
+           LOWER(users.email) LIKE LOWER(?) OR 
+           LOWER(users.username) LIKE LOWER(?)",
+          search_term, search_term, search_term
+        )
+      end
+      if params[:role_id].present?
+        @users = @users.where(role_id: params[:role_id])
+      end
+      
+      @total_users = @users.count
+      @total_pages = (@total_users.to_f / @per_page).ceil
+      @users = @users.order(created_at: :desc).limit(@per_page).offset(offset)
     end
 
     def show

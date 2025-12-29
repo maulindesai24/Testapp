@@ -73,6 +73,29 @@
           </tbody>
         </table>
       </div>
+      <div class="card-footer">
+        <nav aria-label="Role pagination">
+          <ul class="pagination justify-content-end mb-0">
+
+            <!-- Previous -->
+            <li class="page-item <%= 'disabled' if @page == 1 %>">
+              <%= link_to "Previous", admin_roles_path(page: @page - 1), class: "page-link" %>
+            </li>
+
+            <!-- Page Numbers -->
+            <% (1..@total_pages).each do |p| %>
+              <li class="page-item <%= 'active' if p == @page %>">
+                <%= link_to p, admin_roles_path(page: p), class: "page-link" %>
+              </li>
+            <% end %>
+
+            <!-- Next -->
+            <li class="page-item <%= 'disabled' if @page == @total_pages %>">
+              <%= link_to "Next", admin_roles_path(page: @page + 1), class: "page-link" %>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

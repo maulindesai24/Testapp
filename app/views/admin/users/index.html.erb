@@ -11,7 +11,38 @@
 <div class="row">
   <div class="col-12">
     <div class="card">
-      <h5 class="card-header">All Users</h5>
+    <h5 class="card-header d-flex justify-content-between align-items-center">
+      <span>All Users</span>
+      <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+        <i class="bx bx-filter-alt me-1"></i> Filter
+      </button>
+    </h5>
+    <div class="collapse <%= 'show' if params[:search].present? || params[:role_id].present? %>" id="filterCollapse">
+      <div class="card-body border-bottom">
+        <%= form_with url: admin_users_path, method: :get, class: "row g-3" do %>
+          <div class="col-md-6">
+            <label for="search" class="form-label">Search</label>
+            <%= text_field_tag :search, params[:search], 
+                class: "form-control", 
+                placeholder: "Search by name, email or username" %>
+            <small class="text-muted">Search by name, email, or username</small>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="role" class="form-label">Role</label>
+            <%= select_tag :role_id, 
+                options_from_collection_for_select(Role.all, :id, :name, params[:role_id]),
+                include_blank: "All Roles",
+                class: "form-select" %>
+          </div>
+          
+          <div class="col-12">
+            <%= submit_tag "Apply Filter", class: "btn btn-primary btn-sm me-2" %>
+            <%= link_to "Clear", admin_users_path, class: "btn btn-outline-secondary btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
       <div class="table-responsive text-nowrap">
         <table class="table">
           <thead>
@@ -72,6 +103,31 @@
           </tbody>
         </table>
       </div>
+      <% if @total_pages > 1 %>
+        <div class="card-footer">
+          <nav aria-label="User pagination">
+            <ul class="pagination justify-content-end mb-0">
+
+              <!-- Previous -->
+              <li class="page-item <%= 'disabled' if @page == 1 %>">
+                <%= link_to "Previous", admin_users_path(page: @page - 1, search: params[:search], role_id: params[:role_id]), class: "page-link" %>
+              </li>
+
+              <!-- Page Numbers -->
+              <% (1..@total_pages).each do |p| %>
+                <li class="page-item <%= 'active' if p == @page %>">
+                  <%= link_to p, admin_users_path(page: p, search: params[:search], role_id: params[:role_id]), class: "page-link" %>
+                </li>
+              <% end %>
+
+              <!-- Next -->
+              <li class="page-item <%= 'disabled' if @page == @total_pages %>">
+                <%= link_to "Next", admin_users_path(page: @page + 1, search: params[:search], role_id: params[:role_id]), class: "page-link" %>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
