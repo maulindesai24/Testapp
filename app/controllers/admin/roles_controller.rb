@@ -4,9 +4,39 @@ module Admin
       @page = params[:page].to_i <= 0 ? 1 : params[:page].to_i
       @per_page = 10
       offset = (@page - 1) * @per_page
-      @roles = Role.includes(:users).order(created_at: :desc).limit(@per_page).offset(offset)
-      @total_roles = Role.count
+      
+      # Start with base query
+      @roles = Role.includes(:users)
+      
+      # Apply search filter
+      if params[:search].present?
+        search_term = "%#{params[:search]}%"
+        @roles = @roles.where(
+          "LOWER(roles.name) LIKE LOWER(?) OR LOWER(roles.description) LIKE LOWER(?)",
+          search_term, search_term
+        )
+      end
+
+      if params[:user_count].present?
+        case params[:user_count]
+        when "0"
+          @roles = @roles.left_joins(:users).group('roles.id').having('COUNT(users.id) = 0')
+        when "1-5"
+          @roles = @roles.left_joins(:users).group('roles.id').having('COUNT(users.id) BETWEEN 1 AND 5')
+        when "6-20"
+          @roles = @roles.left_joins(:users).group('roles.id').having('COUNT(users.id) BETWEEN 6 AND 20')
+        when "20+"
+          @roles = @roles.left_joins(:users).group('roles.id').having('COUNT(users.id) > 20')
+        end
+      end
+      
+      # Get count AFTER filtering but BEFORE pagination
+      @total_roles = @roles.count
+
+      @total_roles = @total_roles.is_a?(Hash) ? @total_roles.keys.size : @total_roles
       @total_pages = (@total_roles.to_f / @per_page).ceil
+      
+      @roles = @roles.order(created_at: :desc).limit(@per_page).offset(offset)
     end
 
     def new
