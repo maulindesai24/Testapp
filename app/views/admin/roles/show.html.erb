@@ -2,6 +2,20 @@
   <span class="text-muted fw-light">Admin / Roles /</span> <%= @role.display_name %>
 </h4>
 
+<!-- Flash Messages -->
+<% if flash[:alert] %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flash[:alert] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+<% if flash[:notice] %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flash[:notice] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-xl">
     <div class="card mb-4">
@@ -123,31 +137,19 @@
 <div class="row">
   <div class="col-xl">
     <div class="card">
-      <div class="card-header">
-        <h5 class="mb-0 text-danger">Danger Zone</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="mb-1">Delete Role</h6>
-            <% if @role.users.any? %>
-              <p class="text-muted mb-0">This role cannot be deleted because it has <%= @role.users.count %> user(s) assigned to it. Please reassign these users first.</p>
-            <% else %>
-              <p class="text-muted mb-0">Once deleted, this role cannot be recovered.</p>
-            <% end %>
-          </div>
-          <% if @role.users.any? %>
-            <button class="btn btn-danger" disabled>
-              <i class="bx bx-trash me-1"></i> Delete Role
-            </button>
-          <% else %>
-            <%= link_to admin_role_path(@role), method: :delete, 
-                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete '#{@role.display_name}'? This action cannot be undone." },
-                class: "btn btn-danger" do %>
-              <i class="bx bx-trash me-1"></i> Delete Role
-            <% end %>
-          <% end %>
-        </div>
+
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-danger">Delete <%= @role.display_name %> Role</h5>
+
+        <%= link_to admin_role_path(@role),
+            method: :delete,
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure you want to delete '#{@role.display_name}'? This action cannot be undone."
+            },
+            class: "btn btn-danger btn-sm" do %>
+          <i class="bx bx-trash me-1"></i> Delete
+        <% end %>
       </div>
     </div>
   </div>

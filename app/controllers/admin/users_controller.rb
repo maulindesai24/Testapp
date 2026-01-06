@@ -39,6 +39,7 @@ module Admin
         UserMailer.welcome_email(@user).deliver_now
         redirect_to admin_user_path(@user), notice: "User created successfully."
       else
+        @roles = Role.all
         render :new, status: :unprocessable_entity
       end
     end

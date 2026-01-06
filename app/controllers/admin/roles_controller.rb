@@ -70,8 +70,11 @@ module Admin
     end
 
     def destroy
-      @role = Role.find(params[:id])
-      if @role.destroy
+      @role = Role.includes(:users).find(params[:id])
+      if @role.users.any?
+        user_count = @role.users.count
+        redirect_to admin_role_path(@role), alert: "This role cannot be deleted because it has #{user_count} user(s) assigned to it."
+      elsif @role.destroy
         redirect_to admin_roles_path, notice: "Role deleted successfully."
       else
         redirect_to admin_role_path(@role), alert: "Cannot delete role: #{@role.errors.full_messages.join(', ')}"
